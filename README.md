@@ -23,6 +23,58 @@ $ composer require slick/filter
 
 ## Usage
 
+The best way to filter your data is to use the `StaticFilter` utility class. It can create any
+`FilterInterface` filter and it has alias for the known filters that are bundled with the
+`Slick\Filter` package.
+
+```php
+use Slick\Filter\StaticFilter;
+
+echo StaticFilter::filter('number', '12 3');  // Will output 123
+
+$text = StaticFilter::filter('text', 123);
+echo is_string($text);      // will output 1 (true)
+```
+
+#### Known filters
+
+| Alias          | Class                       | Description                                                   |
+|----------------|-----------------------------|---------------------------------------------------------------|
+| _text_         | `Slick\Filter\Text`         | Converts input to a string                                    |
+| _number_       | `Slick\Filter\Number`       | Converts the input to an integer number                       |
+| _url_          | `Slick\Filter\Url`          | Converts/Fixes the input to a valid URL                       |
+| _htmlEntities_ | `Slick\Filter\HtmlEntities` | Converts special characters to its html entity representation | 
+
+#### Filter chains
+
+It is also possible to combine multiple filters to a single input value by using the
+`FilterChainInterface`. 
+
+```php
+use Slick\Filter\FilterChain;
+use Slick\Filter\StaticFilter;
+
+$filterChain = new FilterChain();
+
+$filterChain
+    ->add(StaticFilter::create('text'))
+    ->add(StaticFilter::create('htmlEntities'));
+    
+$input = '<p>This is a simple text & cia!</p>';
+
+$output = $filterChain->filter($value);
+
+echo $output;
+```
+
+The above code will output:
+
+```html
+This is a simple text &amp; cia!
+```
+
+You can create you own filters by implementing the `FilterInterface`.
+
 ## Testing
 
 ``` bash
