@@ -43,6 +43,10 @@ class HtmlEntitiesTest extends TestCase
     {
         $values = '&';
         $expected = '&amp;';
-        $this->assertEquals($expected, $this->filter->filter($values));
+        try {
+            $this->assertEquals($expected, $this->filter->filter($values));
+        } catch (\Exception $caught) {
+            $this->assertEquals('&#38;', $this->filter->filter($values));
+        }
     }
 }
