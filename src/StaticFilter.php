@@ -73,7 +73,7 @@ final class StaticFilter
      *
      * @throws InvalidArgumentException If the class does not exists.
      */
-    protected function getClass($alias)
+    protected static function getClass($alias)
     {
         if (array_key_exists($alias, self::$filters)) {
             return self::$filters[$alias];
@@ -95,7 +95,7 @@ final class StaticFilter
      * @throws InvalidArgumentException
      *      If the class does not implements the interface.
      */
-    protected function checkFilter($class)
+    protected static function checkFilter($class)
     {
         if (!is_subclass_of($class, 'Slick\Filter\FilterInterface')) {
             throw new InvalidArgumentException(
